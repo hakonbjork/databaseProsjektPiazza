@@ -1,7 +1,7 @@
 import java.sql.*;
 import java.util.Properties;
 
-public class DBConn {
+public abstract class DBConn {
     protected Connection conn;
 
     public DBConn() {
@@ -16,8 +16,8 @@ public class DBConn {
             Properties p = new Properties();
             p.put("user", "root");
             p.put("password", "databaseGruppe179");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=databaseGruppe179"+
-                    "&allowPublicKeyRetrieval=true&autoReconnect=true&useSSL=false",p);
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/databaseprosjekt?"+
+                    "&allowPublicKeyRetrieval=true&autoReconnect=true&useSSL=false", p);
             System.out.println("Success! ");
         } catch (Exception e) {
             throw new RuntimeException("Unable to connect", e);
@@ -31,12 +31,5 @@ public class DBConn {
         catch (Exception e){
             System.out.println("Error in closing connection");
         }
-    }
-
-    public static void main(String[] args) {
-        DBConn dbConn = new DBConn();
-        dbConn.connect();
-        System.out.println("hallo på do");
-        dbConn.closeConnection();
     }
 }
