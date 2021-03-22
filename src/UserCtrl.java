@@ -1,5 +1,4 @@
-import java.sql.PreparedStatement;
-import java.sql.Statement;
+import java.sql.*;
 
 public class UserCtrl extends DBConn {
 
@@ -21,7 +20,7 @@ public class UserCtrl extends DBConn {
             regStatement.setString(1, username);
             regStatement.setString(2, fullname);
             regStatement.setString(3, userpassword);
-            regStatement.executeUpdate();
+            regStatement.execute();
         }
         catch (Exception e) {
             System.out.println("Error in adding of user with username: " + username);
@@ -29,11 +28,40 @@ public class UserCtrl extends DBConn {
         }
     }
 
+    public boolean checkUserExist(String username, String password) {
+        try {
+            Statement stmt = conn.createStatement();
+            String query = "SELECT Username, Userpassword FROM ForumUser WHERE (Username = '"+username+"' AND Userpassword = '"+password+"')";
+
+            ResultSet rs = stmt.executeQuery(query);
+
+            Boolean userExists = false;
+            if (rs.next()) {
+                userExists = true;
+            }
+
+            if (userExists) {
+                System.out.println("User found with username " + username);
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("db error during checking of user " + e);
+        }
+
+        return false;
+    }
+
     public static void main(String[] args) {
         UserCtrl userCtrl = new UserCtrl();
         userCtrl.connect();
-        userCtrl.startUserAdding();
-        System.out.println("Started user adding...");
-        userCtrl.addUser("test2@test.com", "Test User", "test123");
+        // userCtrl.startUserAdding();
+        // userCtrl.addUser("test@test.com", "Test User", "test123");
+        if (userCtrl.checkUserExist("test@test.com", "test123")) {
+            System.out.println("Check worked");
+        } else {
+            System.out.println("USer not found");
+        }
+
+
     }
 }
