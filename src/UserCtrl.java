@@ -3,7 +3,6 @@ import java.sql.*;
 public class UserCtrl extends DBConn {
 
     private PreparedStatement regStatement;
-    private Statement statement;
 
     public void startUserAdding() {
         try {
@@ -51,15 +50,40 @@ public class UserCtrl extends DBConn {
         return false;
     }
 
+    public boolean checkInstructor(String username) {
+        String string1 = "";
+        try {
+            Statement stmt = conn.createStatement();
+            String query = "SELECT UserInCourse.UserRole\n" +
+                    "FROM ForumUser JOIN UserInCourse \n" +
+                    "ON ForumUser.Username = UserInCourse.Username\n" +
+                    "WHERE ForumUser.Username = \""+username+"\";";
+
+            ResultSet rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+                System.out.println(rs.getString("UserRole"));
+                return (rs.getString("UserRole").equals("Instructor"));
+            } else {
+                System.out.println("Error: User with username " + username + " not found in database");
+            }
+
+
+        } catch (Exception e) {
+            System.out.println("Something went wrong with instructor check. Error: " + e);
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         UserCtrl userCtrl = new UserCtrl();
         userCtrl.connect();
         // userCtrl.startUserAdding();
         // userCtrl.addUser("test@test.com", "Test User", "test123");
-        if (userCtrl.checkUserExist("test@test.com", "test123")) {
-            System.out.println("Check worked");
+        if (userCtrl.checkInstructor("håkonhotmail.com")) {
+            System.out.println("Bruker er intruktør");
         } else {
-            System.out.println("USer not found");
+            System.out.println("Bruker er ikke instruktør");
         }
 
 
