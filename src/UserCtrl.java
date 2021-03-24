@@ -40,7 +40,6 @@ public class UserCtrl extends DBConn {
             }
 
             if (userExists) {
-                System.out.println("User found with username " + username);
                 return true;
             }
         } catch (Exception e) {
@@ -75,17 +74,33 @@ public class UserCtrl extends DBConn {
         return false;
     }
 
+    public String getUserRole(String courseCode, String username) {
+        String userRole = "";
+        try {
+            Statement stmt = conn.createStatement();
+            String query = "SELECT UserRole FROM UserInCourse \n" +
+                    "WHERE (CourseCode = '"+courseCode+"' AND Username = '"+username+"')";
+
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                userRole = rs.getString("UserRole");
+            }
+            else {
+                System.out.println("No result found");
+            }
+        } catch (Exception e) {
+            System.out.println("Error when getting user role: \n" + e);
+        }
+
+        return userRole;
+    }
+
     public static void main(String[] args) {
         UserCtrl userCtrl = new UserCtrl();
         userCtrl.connect();
         // userCtrl.startUserAdding();
         // userCtrl.addUser("test@test.com", "Test User", "test123");
-        if (userCtrl.checkInstructor("håkonhotmail.com")) {
-            System.out.println("Bruker er intruktør");
-        } else {
-            System.out.println("Bruker er ikke instruktør");
-        }
-
+        System.out.println(userCtrl.getUserRole("TTM4356", "johannesgmail.com"));
 
     }
 }
