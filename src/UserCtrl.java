@@ -2,14 +2,13 @@ import java.sql.*;
 
 public class UserCtrl extends DBConn {
 
-        /**
+    /**
      * Checks if a given username and password exists in the same
      * row in the ForumUser table in the database.
      * Returns true if it exists, false if not.
+     *
      * @param username  the username being checked.
-     *
      * @param password  the password being checked.
-     *
      */
     public boolean checkUserExist(String username, String password) {
         try {
@@ -18,7 +17,7 @@ public class UserCtrl extends DBConn {
 
             ResultSet rs = stmt.executeQuery(query);
 
-            Boolean userExists = false;
+            boolean userExists = false;
             if (rs.next()) {
                 userExists = true;
             }
@@ -40,7 +39,6 @@ public class UserCtrl extends DBConn {
      * @param username  the string that corresponds to username that is to be checked.
      */
     public boolean checkInstructor(String username) {
-        String string1 = "";
         try {
             Statement stmt = conn.createStatement();
             String query = "SELECT UserInCourse.UserRole\n" +
@@ -87,9 +85,6 @@ public class UserCtrl extends DBConn {
     public static void main(String[] args) {
         UserCtrl userCtrl = new UserCtrl();
         userCtrl.connect();
-        // userCtrl.startUserAdding();
-        // userCtrl.addUser("test@test.com", "Test User", "test123");
         System.out.println(userCtrl.getUserRole("TTM4356", "johannesgmail.com"));
-
     }
 }

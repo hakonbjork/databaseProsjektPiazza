@@ -38,9 +38,9 @@ public class StatisticsCtrl extends DBConn {
                     "ORDER BY NumberOfPostsRead DESC;"
                     ;
             ResultSet rs = stmt.executeQuery(query);
-            System.out.println("Statistikk");
+            System.out.println("Statistikk: ");
             while (rs.next()) {
-                System.out.println(rs.getString("Brukernavn") + " Poster lest: " + rs.getString("NumberOfPostsRead") + ", Poster opprettet: " + rs.getInt("NumberOfPostsCreated"));
+                System.out.println("Brukernavn: "+rs.getString("username") + ", Poster lest: " + rs.getString("NumberOfPostsRead") + ", Poster opprettet: " + rs.getInt("NumberOfPostsCreated"));
             }
         } catch (Exception e) {
             System.out.println("Error finding statistics");

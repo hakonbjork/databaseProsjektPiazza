@@ -48,8 +48,7 @@ public class PostCtrl extends DBConn {
             regStatement.execute();
         }
         catch (Exception e) {
-            System.out.println("Error in adding of thread");
-            System.out.println(e);
+            System.out.println("Error in adding of thread: \n"+e);
         }
     }
 
@@ -73,8 +72,7 @@ public class PostCtrl extends DBConn {
             regStatement.execute();
         }
         catch (Exception e) {
-            System.out.println("Error in adding of post");
-            System.out.println(e);
+            System.out.println("Error in adding of post: \n"+e);
         }
     }
 
@@ -169,27 +167,11 @@ public class PostCtrl extends DBConn {
         }
     }
 
-    public void simpleTestSearch() {
-        try {
-            Statement stmt = conn.createStatement();
-            String query = "SELECT * FROM ForumUser";
-            ResultSet rs = stmt.executeQuery(query);
-        } catch (Exception e) {
-            System.out.println("Her gikk noe galt! Feil: " + e);
-        }
-    }
-
     public static void main(String[] args) {
         PostCtrl postCtrl = new PostCtrl();
         postCtrl.connect();
-        //postCtrl.startPostAdding();
         postCtrl.startThreadAdding();
-        //postCtrl.simpleTestSearch();
         postCtrl.addThread(4, "Hjelp", "Jeg trenger hjelp", false, 1, "håkonhotmail.com");
-        //postCtrl.addPost(5, "Hei", "Trenger venner", true, "håkonhotmail.com", 1);
-        //System.out.println(postCtrl.nextThreadID());
-        //System.out.println(postCtrl.nextPostID(1));
-        //postCtrl.assignTagToThread(2, "Question");
         postCtrl.closeConnection();
     }
 }

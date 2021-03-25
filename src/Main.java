@@ -2,10 +2,10 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static UserCtrl userCtrl = new UserCtrl();
-    private static PostCtrl postCtrl = new PostCtrl();
-    private static StatisticsCtrl statisticsCtrl = new StatisticsCtrl();
-    private static SearchCtrl searchCtrl = new SearchCtrl();
+    private static final UserCtrl userCtrl = new UserCtrl();
+    private static final PostCtrl postCtrl = new PostCtrl();
+    private static final StatisticsCtrl statisticsCtrl = new StatisticsCtrl();
+    private static final SearchCtrl searchCtrl = new SearchCtrl();
 
     public boolean login(String username, String password) {
         return userCtrl.checkUserExist(username, password);
@@ -27,7 +27,7 @@ public class Main {
         String tagName = scanner.nextLine();
 
         boolean anonymous = false;
-        if (anonymousChar.toLowerCase().equals("j")) {
+        if (anonymousChar.equalsIgnoreCase("j")) {
             anonymous = true;
         }
         int threadID = postCtrl.nextThreadID();
@@ -55,11 +55,11 @@ public class Main {
         String text = scanner.nextLine();
 
         boolean anonymous = false;
-        if (anonymousChar.toLowerCase().equals("j")) {
+        if (anonymousChar.equalsIgnoreCase("j")) {
             anonymous = true;
         }
         int postID = postCtrl.nextPostID(threadID);
-        postCtrl.addPost(postID, title, text, false, username, threadID);
+        postCtrl.addPost(postID, title, text, anonymous, username, threadID);
         System.out.println("Posten ble lagt til som svar på tråden. ID til denne posten er: " + postID);
 
     }
@@ -94,7 +94,7 @@ public class Main {
         Scanner lineScanner = new Scanner(System.in);
         String menuString = "Meny: \n" + "1: Lag en ny tråd. \n" + "2: Kommenter på en tråd. \n" + "3: Søk etter tråder eller poster med nøkkelord. \n" + "4: Finn statistikk (kun for instruktører.)";
 
-        // LOGIN
+        // LOGIN - USECASE 1
         String username = "";
         String password = "";
         while (!main.login(username, password)) {
@@ -110,25 +110,33 @@ public class Main {
         while (input != 9) {
             input = lineScanner.nextInt();
 
+            // USECASE 2
             if (input == 1) {
                 addThread(lineScanner, username);
                 System.out.println(menuString);
             }
 
+            // USECASE 3
             if (input == 2) {
                 addPost(lineScanner, username);
                 System.out.println(menuString);
             }
 
+            //USECASE 4
             if (input == 3) {
                 searchForPost(lineScanner);
                 System.out.println(menuString);
             }
 
+            // USECASE 5
             if (input == 4) {
                 getStatistics(lineScanner, username);
                 System.out.println(menuString);
             }
         }
+        userCtrl.closeConnection();
+        postCtrl.closeConnection();
+        searchCtrl.closeConnection();
+        statisticsCtrl.closeConnection();
     }
 }
