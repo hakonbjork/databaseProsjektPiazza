@@ -105,6 +105,10 @@ public class PostCtrl extends DBConn {
         return nextPostID;
     }
 
+    /**
+     * This method is a simple search method
+     * @param folderName The folderName used to find the folderID
+     */
     public int findFolderID(String folderName) {
         try {
             Statement stmt1 = conn.createStatement();
