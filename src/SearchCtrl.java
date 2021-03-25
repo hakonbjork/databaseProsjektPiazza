@@ -2,6 +2,13 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class SearchCtrl extends DBConn {
+
+    /**
+     * Searches for a specific keyword in the title or text of both threads and posts.
+     * Returns the IDs for the posts that contains the keyword and the IDs for threads
+     * that contains the keyword.
+     * @param keyword  the string to search for in posts and threads.
+     */
    public void searchForKeyword(String keyword) {
        try {
            Statement stmt1 = conn.createStatement();

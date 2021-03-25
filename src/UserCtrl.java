@@ -2,31 +2,15 @@ import java.sql.*;
 
 public class UserCtrl extends DBConn {
 
-    private PreparedStatement regStatement;
-
-    public void startUserAdding() {
-        try {
-            regStatement = conn.prepareStatement("INSERT INTO ForumUser VALUES ( (?), (?), (?))");
-        }
-        catch (Exception e) {
-            System.out.println("DB error during insertion");
-        }
-
-    }
-
-    public void addUser(String username, String fullname, String userpassword) {
-        try {
-            regStatement.setString(1, username);
-            regStatement.setString(2, fullname);
-            regStatement.setString(3, userpassword);
-            regStatement.execute();
-        }
-        catch (Exception e) {
-            System.out.println("Error in adding of user with username: " + username);
-            System.out.println(e);
-        }
-    }
-
+        /**
+     * Checks if a given username and password exists in the same
+     * row in the ForumUser table in the database.
+     * Returns true if it exists, false if not.
+     * @param username  the username being checked.
+     *
+     * @param password  the password being checked.
+     *
+     */
     public boolean checkUserExist(String username, String password) {
         try {
             Statement stmt = conn.createStatement();
@@ -49,6 +33,12 @@ public class UserCtrl extends DBConn {
         return false;
     }
 
+    /**
+     * Checks what role a given user has.
+     * If the user is an instructor it return true, if not, false.
+     *
+     * @param username  the string that corresponds to username that is to be checked.
+     */
     public boolean checkInstructor(String username) {
         String string1 = "";
         try {
@@ -61,7 +51,6 @@ public class UserCtrl extends DBConn {
             ResultSet rs = stmt.executeQuery(query);
 
             if (rs.next()) {
-                System.out.println(rs.getString("UserRole"));
                 return (rs.getString("UserRole").equals("Instructor"));
             } else {
                 System.out.println("Error: User with username " + username + " not found in database");

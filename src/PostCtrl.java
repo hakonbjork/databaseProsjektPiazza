@@ -4,6 +4,9 @@ public class PostCtrl extends DBConn {
 
     private PreparedStatement regStatement;
 
+    /**
+     * Creates the prepared statement for adding a thread.
+     */
     public void startThreadAdding() {
         try {
             regStatement = conn.prepareStatement("INSERT INTO Thread VALUES ( (?), (?), (?), (?), (?), (?))");
@@ -13,6 +16,9 @@ public class PostCtrl extends DBConn {
         }
     }
 
+    /**
+     * Creates the prepared statement for adding a post.
+     */
     public void startPostAdding() {
         try {
             regStatement = conn.prepareStatement("INSERT INTO Post VALUES ( (?), (?), (?), (?), (?), (?))");
@@ -22,6 +28,15 @@ public class PostCtrl extends DBConn {
         }
     }
 
+    /**
+     * Adds a thread with the following parameters to the database.
+     * @param threadID the unique ID of the Thread.
+     * @param title the title of the Thread.
+     * @param threadText the text of the Thread.
+     * @param anonymous if the Thread is to be displayed as anonymous when showed to others.
+     * @param folderID the ID of the Folder the Thread is to belong to.
+     * @param threadCreator the creator of the Thread.
+     */
     public void addThread(int threadID, String title, String threadText, boolean anonymous, int folderID, String threadCreator) {
         try {
             regStatement.setInt(1, threadID);
@@ -38,6 +53,15 @@ public class PostCtrl extends DBConn {
         }
     }
 
+    /**
+     * Adds a post (reply) with the following parameters to the database.
+     * @param postID the unique ID of the Post.
+     * @param title the Title of the Post.
+     * @param postText the text in the Post.
+     * @param anonymous a boolean deciding if the Post is to be displayed as anonymous when showed to others.
+     * @param threadID the ID of the Thread the Post is to belong to.
+     * @param postCreator the creator of the Post.
+     */
     public void addPost(int postID, String title, String postText, boolean anonymous, String postCreator, int threadID) {
         try {
             regStatement.setInt(1, postID);
@@ -54,6 +78,12 @@ public class PostCtrl extends DBConn {
         }
     }
 
+    /**
+     * Assigns a Tag to a Thread by adding the given parameters to the
+     * relation class TagInThread.
+     * @param threadID the ThreadID that is going to be assigned a tag.
+     * @param tagName the Tag that is to be assigned to the Thread.
+     */
     public void assignTagToThread(int threadID, String tagName) {
         try {
             Statement stmt = conn.createStatement();
@@ -65,6 +95,9 @@ public class PostCtrl extends DBConn {
         }
     }
 
+    /**
+     * Finds the next ThreadID that has not been used.
+     */
     public int nextThreadID() {
         int nextThreadID = 1;
         try {
@@ -84,6 +117,11 @@ public class PostCtrl extends DBConn {
         return nextThreadID;
     }
 
+    /**
+     * Finds the next PostID that has not been used. Since Post is a weak entity defined by Thread,
+     * we can have PostID that are only unique withing each Thread.
+     * @param threadID the ThreadID the post belongs to.
+     */
     public int nextPostID(int threadID) {
         int nextPostID = 1;
         try {
@@ -106,8 +144,7 @@ public class PostCtrl extends DBConn {
     }
 
     /**
-     * This method is a simple search method
-     * @param folderName The folderName used to find the folderID
+     *
      */
     public int findFolderID(String folderName) {
         try {

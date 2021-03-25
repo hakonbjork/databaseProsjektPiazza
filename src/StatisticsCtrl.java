@@ -2,6 +2,11 @@ import java.sql.*;
 
 public class StatisticsCtrl extends DBConn {
 
+    /**
+     * Retrieves the statistic of number of posts read and created by each user of the system.
+     * The sql statement uses union all to combine the number of threads created/read
+     * and the number of posts created/read.
+     */
     public void getStatistics() {
         try {
             Statement stmt = conn.createStatement();
@@ -33,9 +38,9 @@ public class StatisticsCtrl extends DBConn {
                     "ORDER BY NumberOfPostsRead DESC;"
                     ;
             ResultSet rs = stmt.executeQuery(query);
-            System.out.println("Statistikk for emnet");
+            System.out.println("Statistikk");
             while (rs.next()) {
-                System.out.println(rs.getString("Username") + " Posts read: " + rs.getString("NumberOfPostsRead") + ", Posts created: " + rs.getInt("NumberOfPostsCreated"));
+                System.out.println(rs.getString("Brukernavn") + " Poster lest: " + rs.getString("NumberOfPostsRead") + ", Poster opprettet: " + rs.getInt("NumberOfPostsCreated"));
             }
         } catch (Exception e) {
             System.out.println("Error finding statistics");

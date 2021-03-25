@@ -1,4 +1,3 @@
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Main {
@@ -8,9 +7,6 @@ public class Main {
     private static StatisticsCtrl statisticsCtrl = new StatisticsCtrl();
     private static SearchCtrl searchCtrl = new SearchCtrl();
 
-    private String courseCode = "TTM4356";
-    private String currentUsername = "";
-
     public boolean login(String username, String password) {
         return userCtrl.checkUserExist(username, password);
     }
@@ -18,8 +14,10 @@ public class Main {
     public static void addThread(Scanner scanner, String username) {
         postCtrl.startThreadAdding();
         System.out.println("Du valgte  1: Legg til ny post i ny tråd.");
-        System.out.println("Skriv inn tittel: ");
+        System.out.println("Vil du være anonym? Skriv J for ja eller N for nei");
         scanner.nextLine();
+        String anonymousChar = scanner.nextLine();
+        System.out.println("Skriv inn tittel: ");
         String title = scanner.nextLine();
         System.out.println("Skriv inn innhold: ");
         String text = scanner.nextLine();
@@ -28,12 +26,16 @@ public class Main {
         System.out.println("Skriv inn tag: ");
         String tagName = scanner.nextLine();
 
+        boolean anonymous = false;
+        if (anonymousChar.toLowerCase().equals("j")) {
+            anonymous = true;
+        }
         int threadID = postCtrl.nextThreadID();
         int folderID = postCtrl.findFolderID(folderName);
         if (folderID == -1) {
             System.out.println("Feil: Ingen mappe med dette navnet");
         }
-        postCtrl.addThread(threadID, title, text, false, folderID, username);
+        postCtrl.addThread(threadID, title, text, anonymous, folderID, username);
         postCtrl.assignTagToThread(threadID, tagName);
         System.out.println("Ny post lagt til. ID til denn tråden er " + threadID);
     }
@@ -41,8 +43,10 @@ public class Main {
     public static void addPost(Scanner scanner, String username) {
         postCtrl.startPostAdding();
         System.out.println("Du valgte  2: Svar på en post.");
-        System.out.println("Skriv inn ID på tråden du vil respondere på");
+        System.out.println("Vil du være anonym? Skriv J for ja eller N for nei");
         scanner.nextLine();
+        String anonymousChar = scanner.nextLine();
+        System.out.println("Skriv inn ID på tråden du vil respondere på");
         int threadID = scanner.nextInt();
         System.out.println("Skriv inn tittel: ");
         scanner.nextLine();
@@ -50,6 +54,10 @@ public class Main {
         System.out.println("Skriv inn innhold: ");
         String text = scanner.nextLine();
 
+        boolean anonymous = false;
+        if (anonymousChar.toLowerCase().equals("j")) {
+            anonymous = true;
+        }
         int postID = postCtrl.nextPostID(threadID);
         postCtrl.addPost(postID, title, text, false, username, threadID);
         System.out.println("Posten ble lagt til som svar på tråden. ID til denne posten er: " + postID);
@@ -120,17 +128,6 @@ public class Main {
             if (input == 4) {
                 getStatistics(lineScanner, username);
                 System.out.println(menuString);
-            }
-        }
-    }
-
-    public static void main2(String[] args) {
-        System.out.println("heiwf");
-        Scanner scanner = new Scanner(System.in);
-        while (scanner.nextInt() != 9) {
-            int input = scanner.nextInt();
-            if (input == 1) {
-                addThread(scanner, "håkonhotmail.com");
             }
         }
     }
