@@ -37,14 +37,5 @@ public class SearchCtrl extends DBConn {
        } catch (Exception e) {
            System.out.println("Error finding posts");
        }
-
-
-   }
-
-   public static void main(String[] args) {
-       SearchCtrl searchCtrl = new SearchCtrl();
-       searchCtrl.connect();
-       searchCtrl.searchForKeyword("hei");
-       System.out.println("Posts retrieved");
    }
 }

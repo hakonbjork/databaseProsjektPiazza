@@ -11,6 +11,12 @@ public class Main {
         return userCtrl.checkUserExist(username, password);
     }
 
+    /**
+     * Asks for user input and uses input and postCtrl to add
+     * a new thread to the database
+     * @param scanner - The scanner used to fetch user input
+     * @param username - The username of the current user
+     */
     public static void addThread(Scanner scanner, String username) {
         postCtrl.startThreadAdding();
         System.out.println("Du valgte  1: Legg til ny post i ny tråd.");
@@ -40,6 +46,12 @@ public class Main {
         System.out.println("Ny post lagt til. ID til denn tråden er " + threadID);
     }
 
+    /**
+     * Asks for user input and uses input and postCtrl to add
+     * a new post to the database
+     * @param scanner - The scanner used to fetch user input
+     * @param username - The username of the current user
+     */
     public static void addPost(Scanner scanner, String username) {
         postCtrl.startPostAdding();
         System.out.println("Du valgte  2: Svar på en post.");
@@ -64,6 +76,11 @@ public class Main {
 
     }
 
+    /**
+     * Asks for user input and uses that and searchCtrl to
+     * search for a keyword among posts and threads
+     * @param scanner - The scanner used to fetch user input
+     */
     public static void searchForPost(Scanner scanner) {
         String keyword;
         System.out.println("Du valgte 3: Søk etter tråder eller poster med nøkkelord. \n" + "Skriv inn nøkkelordet du vil søke etter:");
@@ -72,6 +89,11 @@ public class Main {
         searchCtrl.searchForKeyword(keyword);
     }
 
+    /**
+     * Retrieves statistics using the methods from the StatisticsCtrl class.
+     * @param scanner - The scanner used to fetch user input
+     * @param username - The username of the user requesting the statistics.
+     */
     public static void getStatistics(Scanner scanner, String username) {
         System.out.println("Du valgte  4: Finn statistikk (kun for instruktører.)");
         if (userCtrl.checkInstructor(username)) {
@@ -83,6 +105,11 @@ public class Main {
         }
     }
 
+    /**
+     * The programs main method. Sets up the controllers and
+     * uses user input along with helper methods to create a
+     * textual interface for the application.
+     */
     public static void main(String[] args) {
         // SETUP
         userCtrl.connect();

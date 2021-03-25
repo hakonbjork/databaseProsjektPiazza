@@ -142,7 +142,8 @@ public class PostCtrl extends DBConn {
     }
 
     /**
-     *
+     * Finds the folderID of a spesific folder
+     * @param folderName - Name of the folder
      */
     public int findFolderID(String folderName) {
         try {
@@ -165,13 +166,5 @@ public class PostCtrl extends DBConn {
             System.out.println("Error finding folder: "+e);
             return -1;
         }
-    }
-
-    public static void main(String[] args) {
-        PostCtrl postCtrl = new PostCtrl();
-        postCtrl.connect();
-        postCtrl.startThreadAdding();
-        postCtrl.addThread(4, "Hjelp", "Jeg trenger hjelp", false, 1, "håkonhotmail.com");
-        postCtrl.closeConnection();
     }
 }

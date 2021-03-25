@@ -45,14 +45,5 @@ public class StatisticsCtrl extends DBConn {
         } catch (Exception e) {
             System.out.println("Error finding statistics");
         }
-
-
-    }
-
-    public static void main(String[] args) {
-        StatisticsCtrl statCtrl = new StatisticsCtrl();
-        statCtrl.connect();
-        statCtrl.getStatistics();
-        System.out.println("Statistics retrieved");
     }
 }
