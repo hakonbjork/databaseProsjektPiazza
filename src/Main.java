@@ -17,46 +17,46 @@ public class Main {
 
     public static void addThread(Scanner scanner, String username) {
         postCtrl.startThreadAdding();
-        System.out.println("Enter title: ");
+        System.out.println("Du valgte  1: Legg til ny post i ny tråd.");
+        System.out.println("Skriv inn tittel: ");
         scanner.nextLine();
         String title = scanner.nextLine();
-        System.out.println("Enter text: ");
+        System.out.println("Skriv inn innhold: ");
         String text = scanner.nextLine();
-        System.out.println("Enter folder: ");
+        System.out.println("Skriv inn mappenavn: ");
         String folderName = scanner.nextLine();
-        System.out.println("Enter tag: ");
+        System.out.println("Skriv inn tag: ");
         String tagName = scanner.nextLine();
 
         int threadID = postCtrl.nextThreadID();
         int folderID = postCtrl.findFolderID(folderName);
         if (folderID == -1) {
-            System.out.println("Error: No folder with this name found.");
+            System.out.println("Feil: Ingen mappe med dette navnet");
         }
         postCtrl.addThread(threadID, title, text, false, folderID, username);
         postCtrl.assignTagToThread(threadID, tagName);
-        System.out.println("Thread added successfully. ThreadID: " + threadID);
+        System.out.println("Ny post lagt til. ID til denn tråden er " + threadID);
     }
 
     public static void addPost(Scanner scanner, String username) {
         postCtrl.startPostAdding();
-        System.out.println("Enter ID of the thread you want to respond to");
+        System.out.println("Du valgte  2: Svar på en post.");
+        System.out.println("Skriv inn ID på tråden du vil respondere på");
         scanner.nextLine();
         int threadID = scanner.nextInt();
-        System.out.println("Enter title: ");
+        System.out.println("Skriv inn tittel: ");
         scanner.nextLine();
         String title = scanner.nextLine();
-        System.out.println("Enter text: ");
+        System.out.println("Skriv inn innhold: ");
         String text = scanner.nextLine();
 
         int postID = postCtrl.nextPostID(threadID);
         postCtrl.addPost(postID, title, text, false, username, threadID);
-        System.out.println("Post added successfully. PostID: " + postID);
+        System.out.println("Posten ble lagt til som svar på tråden. ID til denne posten er: " + postID);
 
     }
 
     public static void searchForPost(Scanner scanner) {
-        SearchCtrl searchCtrl = new SearchCtrl();
-        searchCtrl.connect();
         String keyword;
         System.out.println("Du valgte 3: Søk etter tråder eller poster med nøkkelord. \n" + "Skriv inn nøkkelordet du vil søke etter:");
         scanner.nextLine();
@@ -65,12 +65,13 @@ public class Main {
     }
 
     public static void getStatistics(Scanner scanner, String username) {
+        System.out.println("Du valgte  4: Finn statistikk (kun for instruktører.)");
         if (userCtrl.checkInstructor(username)) {
-            StatisticsCtrl statCtrl = new StatisticsCtrl();
-            statCtrl.connect();
             scanner.nextLine();
-            System.out.println("Du valgte  4: Finn statistikk (kun for instruktører.)");
-            statCtrl.getStatistics();
+            statisticsCtrl.getStatistics();
+        }
+        else {
+            System.out.println("Du er ikke instruktør. Statistikk ikke tilgjengelig");
         }
     }
 
@@ -78,6 +79,8 @@ public class Main {
         // SETUP
         userCtrl.connect();
         postCtrl.connect();
+        searchCtrl.connect();
+        statisticsCtrl.connect();
         Main main = new Main();
         System.out.println("Velkommen til piazza. Skriv inn brukernavn for å logge inn: ");
         Scanner lineScanner = new Scanner(System.in);
@@ -92,13 +95,13 @@ public class Main {
             System.out.println("Skriv inn passord: ");
             password = lineScanner.nextLine();
         }
-        System.out.println("Login sucessfull");
+        System.out.println("Innlogging vellykket");
 
         int input = -1;
         System.out.println(menuString);
         while (input != 9) {
             input = lineScanner.nextInt();
-            // USECASE 2, MAKE A POST (FIRST POST IN THREAD IS THREAD)
+
             if (input == 1) {
                 addThread(lineScanner, username);
                 System.out.println(menuString);
